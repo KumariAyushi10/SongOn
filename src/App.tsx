@@ -24,14 +24,14 @@ const App: React.FC = () => {
   const [currentSongIndex, setCurrentSongIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement>(null);
 
-  // Mock trending songs data
+  // Mock trending songs data with working audio URLs
   const trendingSongs: Song[] = [
     {
       id: '1',
       title: 'Blinding Lights',
       artist: 'The Weeknd',
       thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/maxresdefault.jpg',
-      videoId: '4NRXx6U8ABQ',
+      videoId: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
       duration: '3:20'
     },
     {
@@ -39,7 +39,7 @@ const App: React.FC = () => {
       title: 'Shape of You',
       artist: 'Ed Sheeran',
       thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/maxresdefault.jpg',
-      videoId: 'JGwWNGJdvx8',
+      videoId: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
       duration: '3:53'
     },
     {
@@ -47,7 +47,7 @@ const App: React.FC = () => {
       title: 'Bad Guy',
       artist: 'Billie Eilish',
       thumbnail: 'https://i.ytimg.com/vi/DyDfgMOUjCI/maxresdefault.jpg',
-      videoId: 'DyDfgMOUjCI',
+      videoId: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
       duration: '3:14'
     },
     {
@@ -55,7 +55,7 @@ const App: React.FC = () => {
       title: 'Watermelon Sugar',
       artist: 'Harry Styles',
       thumbnail: 'https://i.ytimg.com/vi/E07s5ZYygMg/maxresdefault.jpg',
-      videoId: 'E07s5ZYygMg',
+      videoId: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
       duration: '2:54'
     },
     {
@@ -63,7 +63,7 @@ const App: React.FC = () => {
       title: 'Levitating',
       artist: 'Dua Lipa',
       thumbnail: 'https://i.ytimg.com/vi/TUVcZfQe-Kw/maxresdefault.jpg',
-      videoId: 'TUVcZfQe-Kw',
+      videoId: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3',
       duration: '3:23'
     },
     {
@@ -71,7 +71,7 @@ const App: React.FC = () => {
       title: 'Stay',
       artist: 'The Kid LAROI & Justin Bieber',
       thumbnail: 'https://i.ytimg.com/vi/kTJczUoc26U/maxresdefault.jpg',
-      videoId: 'kTJczUoc26U',
+      videoId: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3',
       duration: '2:21'
     }
   ];
@@ -80,17 +80,35 @@ const App: React.FC = () => {
     setCurrentSong(song);
     setCurrentSongIndex(index);
     setIsPlayerVisible(true);
-    setIsPlaying(true);
+    setIsPlaying(false);
+    
+    // Wait for the audio element to update, then play
+    setTimeout(() => {
+      if (audioRef.current) {
+        audioRef.current.load();
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch((error) => {
+          console.error('Error playing audio:', error);
+          setIsPlaying(false);
+        });
+      }
+    }, 100);
   };
 
   const togglePlayPause = () => {
     if (audioRef.current) {
       if (isPlaying) {
         audioRef.current.pause();
+        setIsPlaying(false);
       } else {
-        audioRef.current.play();
+        audioRef.current.play().then(() => {
+          setIsPlaying(true);
+        }).catch((error) => {
+          console.error('Error playing audio:', error);
+          setIsPlaying(false);
+        });
       }
-      setIsPlaying(!isPlaying);
     }
   };
 
@@ -272,11 +290,18 @@ const App: React.FC = () => {
 
           <audio
             ref={audioRef}
-            src={`https://www.youtube.com/watch?v=${currentSong.videoId}`}
+            src={currentSong.videoId}
             onTimeUpdate={handleTimeUpdate}
             onLoadedMetadata={handleLoadedMetadata}
             onEnded={handleSongEnd}
-            autoPlay={isPlaying}
+            onError={(e) => {
+              console.error('Audio error:', e);
+              setIsPlaying(false);
+            }}
+            onCanPlay={() => {
+              console.log('Audio can play');
+            }}
+            crossOrigin="anonymous"
           />
         </div>
       )}
