@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import YouTube from 'react-youtube';
 import './App.css';
@@ -32,8 +31,8 @@ const App: React.FC = () => {
   const [favorites, setFavorites] = useState<Song[]>([]);
   const [playlists, setPlaylists] = useState<{[key: string]: Song[]}>({
     'My Playlist #1': [],
-    'Bollywood Hits': indianSongs.slice(0, 3),
-    'Chill Vibes': trendingSongs.slice(0, 4)
+    'Bollywood Hits': [],
+    'Chill Vibes': []
   });
   const playerRef = useRef<any>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -151,6 +150,9 @@ const App: React.FC = () => {
 
   const [currentPlaylist, setCurrentPlaylist] = useState<Song[]>(trendingSongs);
 
+  const playerRef = useRef<any>(null);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
   // Navigation items
   const navItems = [
     { id: 'home', label: 'Home', icon: '🏠' },
@@ -181,20 +183,20 @@ const App: React.FC = () => {
 
   const searchYouTube = async (query: string) => {
     if (!query.trim()) return;
-    
+
     setIsSearching(true);
     try {
       const API_KEY = 'AIzaSyB1PLcfv4QUvHPCEgxuIm3erejq-xOQkAU';
       const response = await fetch(
         `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=12&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`
       );
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch search results');
       }
-      
+
       const data = await response.json();
-      
+
       const results: Song[] = data.items.map((item: any, index: number) => ({
         id: item.id.videoId,
         title: item.snippet.title,
@@ -205,39 +207,39 @@ const App: React.FC = () => {
         videoId: item.id.videoId,
         duration: 'Loading...'
       }));
-      
+
       // Get video durations
       const videoIds = results.map(song => song.videoId).join(',');
       const durationResponse = await fetch(
         `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${API_KEY}`
       );
-      
+
       if (durationResponse.ok) {
         const durationData = await durationResponse.json();
         const durationsMap = new Map();
-        
+
         durationData.items.forEach((video: any) => {
           const duration = video.contentDetails.duration;
           const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
           const hours = parseInt(match[1] || '0');
           const minutes = parseInt(match[2] || '0');
           const seconds = parseInt(match[3] || '0');
-          
+
           let formattedDuration = '';
           if (hours > 0) {
             formattedDuration = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
           } else {
             formattedDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
           }
-          
+
           durationsMap.set(video.id, formattedDuration);
         });
-        
+
         results.forEach(song => {
           song.duration = durationsMap.get(song.videoId) || '0:00';
         });
       }
-      
+
       setSearchResults(results);
       setActiveSection('search');
     } catch (error) {
@@ -265,7 +267,7 @@ const App: React.FC = () => {
     const player = event.target;
     setDuration(player.getDuration());
     player.setVolume(volume);
-    
+
     setTimeout(() => {
       player.playVideo();
     }, 100);
@@ -274,7 +276,7 @@ const App: React.FC = () => {
   const onStateChange = (event: any) => {
     const player = event.target;
     const state = event.data;
-    
+
     if (state === 1) {
       setIsPlaying(true);
       startTimeUpdate();
@@ -426,6 +428,15 @@ const App: React.FC = () => {
   };
 
   useEffect(() => {
+    setPlaylists(prev => ({
+        ...prev,
+        'Bollywood Hits': indianSongs.slice(0, 3),
+        'Chill Vibes': trendingSongs.slice(0, 4)
+    }));
+}, [trendingSongs, indianSongs]);
+
+
+  useEffect(() => {
     return () => {
       stopTimeUpdate();
     };
@@ -442,7 +453,7 @@ const App: React.FC = () => {
             <span className="logo-subtitle">Premium Music</span>
           </div>
         </div>
-        
+
         <div className="header-search">
           <form onSubmit={handleSearch} className="search-form">
             <div className="search-input-wrapper">
@@ -491,7 +502,7 @@ const App: React.FC = () => {
               </button>
             ))}
           </nav>
-          
+
           <div className="sidebar-playlists">
             <h3>Your Playlists</h3>
             <div className="playlist-items">
