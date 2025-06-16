@@ -37,8 +37,8 @@ const App: React.FC = () => {
   const playerRef = useRef<any>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Indian songs prioritized with high-quality posters (Jai Ho first)
-  const indianSongs: Song[] = [
+  // Priority songs with high-quality posters
+  const prioritySongs: Song[] = [
     {
       id: 'in3',
       title: 'Jai Ho',
@@ -49,6 +49,70 @@ const App: React.FC = () => {
       videoId: 'YR12Z8f1Dh8',
       duration: '5:09'
     },
+    {
+      id: 'intl5',
+      title: 'Shaky Shaky',
+      artist: 'Daddy Yankee',
+      album: 'El Disco Duro',
+      genre: 'Reggaeton',
+      thumbnail: 'https://i.ytimg.com/vi/w0hRwK5KiJo/maxresdefault.jpg',
+      videoId: 'w0hRwK5KiJo',
+      duration: '3:17'
+    },
+    {
+      id: 'intl6',
+      title: 'Stay',
+      artist: 'The Kid LAROI, Justin Bieber',
+      album: 'F*CK LOVE 3',
+      genre: 'Pop',
+      thumbnail: 'https://i.ytimg.com/vi/kTJczUoc26U/maxresdefault.jpg',
+      videoId: 'kTJczUoc26U',
+      duration: '2:21'
+    },
+    {
+      id: 'intl7',
+      title: 'Believer',
+      artist: 'Imagine Dragons',
+      album: 'Evolve',
+      genre: 'Alternative Rock',
+      thumbnail: 'https://i.ytimg.com/vi/7wtfhZwyrcc/maxresdefault.jpg',
+      videoId: '7wtfhZwyrcc',
+      duration: '3:24'
+    },
+    {
+      id: '1',
+      title: 'Blinding Lights',
+      artist: 'The Weeknd',
+      album: 'After Hours',
+      genre: 'Pop',
+      thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/maxresdefault.jpg',
+      videoId: '4NRXx6U8ABQ',
+      duration: '3:20'
+    },
+    {
+      id: '3',
+      title: 'Bad Guy',
+      artist: 'Billie Eilish',
+      album: 'When We All Fall Asleep',
+      genre: 'Alternative',
+      thumbnail: 'https://i.ytimg.com/vi/DyDfgMOUjCI/maxresdefault.jpg',
+      videoId: 'DyDfgMOUjCI',
+      duration: '3:14'
+    },
+    {
+      id: 'in8',
+      title: 'Jawan Title Track',
+      artist: 'Anirudh Ravichander',
+      album: 'Jawan',
+      genre: 'Bollywood',
+      thumbnail: 'https://i.ytimg.com/vi/BVwAVbKYYeM/maxresdefault.jpg',
+      videoId: 'BVwAVbKYYeM',
+      duration: '4:05'
+    }
+  ];
+
+  // Additional songs
+  const additionalSongs: Song[] = [
     {
       id: 'in1',
       title: 'Kesariya',
@@ -98,20 +162,6 @@ const App: React.FC = () => {
       thumbnail: 'https://i.ytimg.com/vi/YRbMpq77naM/maxresdefault.jpg',
       videoId: 'YRbMpq77naM',
       duration: '5:05'
-    }
-  ];
-
-  // International trending songs
-  const internationalSongs: Song[] = [
-    {
-      id: '1',
-      title: 'Blinding Lights',
-      artist: 'The Weeknd',
-      album: 'After Hours',
-      genre: 'Pop',
-      thumbnail: 'https://i.ytimg.com/vi/4NRXx6U8ABQ/maxresdefault.jpg',
-      videoId: '4NRXx6U8ABQ',
-      duration: '3:20'
     },
     {
       id: '2',
@@ -122,16 +172,6 @@ const App: React.FC = () => {
       thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/maxresdefault.jpg',
       videoId: 'JGwWNGJdvx8',
       duration: '3:53'
-    },
-    {
-      id: '3',
-      title: 'Bad Guy',
-      artist: 'Billie Eilish',
-      album: 'When We All Fall Asleep',
-      genre: 'Alternative',
-      thumbnail: 'https://i.ytimg.com/vi/DyDfgMOUjCI/maxresdefault.jpg',
-      videoId: 'DyDfgMOUjCI',
-      duration: '3:14'
     },
     {
       id: '4',
@@ -145,8 +185,8 @@ const App: React.FC = () => {
     }
   ];
 
-  // Combine with Indian songs first (prioritized)
-  const trendingSongs: Song[] = [...indianSongs, ...internationalSongs];
+  // Combine with priority songs first (high-quality posters)
+  const trendingSongs: Song[] = [...prioritySongs, ...additionalSongs];
 
   const [currentPlaylist, setCurrentPlaylist] = useState<Song[]>(trendingSongs);
 
@@ -428,8 +468,8 @@ const App: React.FC = () => {
   useEffect(() => {
     setPlaylists({
         'My Playlist #1': [],
-        'Bollywood Hits': indianSongs.slice(0, 3),
-        'Chill Vibes': [...indianSongs.slice(0, 2), ...internationalSongs.slice(0, 2)]
+        'Bollywood Hits': prioritySongs.slice(0, 3),
+        'Chill Vibes': [...prioritySongs.slice(0, 3), ...additionalSongs.slice(0, 2)]
     });
   }, []); // Empty dependency array to run only once
 
@@ -471,7 +511,6 @@ const App: React.FC = () => {
         </div>
 
         <div className="header-actions">
-          <button className="premium-btn">Get Premium</button>
           <button 
             className="theme-toggle"
             onClick={() => setIsDarkTheme(!isDarkTheme)}
@@ -479,9 +518,6 @@ const App: React.FC = () => {
           >
             {isDarkTheme ? '☀️' : '🌙'}
           </button>
-          <div className="user-menu">
-            <div className="user-avatar">👤</div>
-          </div>
         </div>
       </header>
 
@@ -521,7 +557,7 @@ const App: React.FC = () => {
 
             <h3>Recently Played</h3>
             <div className="playlist-items">
-              {indianSongs.slice(0, 2).map((song) => (
+              {prioritySongs.slice(0, 2).map((song) => (
                 <div key={song.id} className="playlist-item" onClick={() => playSong(song, 0)}>
                   <img src={song.thumbnail} alt={song.title} />
                   <div className="playlist-info">
@@ -774,11 +810,11 @@ const App: React.FC = () => {
               <div className="recent-activity">
                 <h3>Recent Activity</h3>
                 <div className="songs-list">
-                  {indianSongs.slice(0, 5).map((song, index) => (
+                  {prioritySongs.slice(0, 5).map((song, index) => (
                     <div 
                       key={song.id} 
                       className="song-list-item"
-                      onClick={() => playSong(song, index, indianSongs)}
+                      onClick={() => playSong(song, index, prioritySongs)}
                     >
                       <img src={song.thumbnail} alt={song.title} />
                       <div className="song-info">
