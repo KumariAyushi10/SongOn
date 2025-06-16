@@ -114,64 +114,64 @@ const App: React.FC = () => {
   // Additional songs
   const additionalSongs: Song[] = [
     {
-      id: 'in1',
-      title: 'Kesariya',
-      artist: 'Arijit Singh',
-      album: 'Brahmastra',
-      genre: 'Bollywood',
-      thumbnail: 'https://i.ytimg.com/vi/YRJHvpzx9PU/maxresdefault.jpg',
-      videoId: 'YRJHvpzx9PU',
-      duration: '4:28'
+      id: 'sap1',
+      title: 'Sapphire',
+      artist: 'Alone Again',
+      album: 'Sapphire',
+      genre: 'Electronic',
+      thumbnail: 'https://i.ytimg.com/vi/6p0DAz_30qQ/maxresdefault.jpg',
+      videoId: '6p0DAz_30qQ',
+      duration: '3:24'
     },
     {
-      id: 'in4',
-      title: 'Tum Hi Ho',
-      artist: 'Arijit Singh',
-      album: 'Aashiqui 2',
-      genre: 'Romantic',
-      thumbnail: 'https://i.ytimg.com/vi/Jt_B_kGOj2c/maxresdefault.jpg',
-      videoId: 'Jt_B_kGOj2c',
-      duration: '4:22'
-    },
-    {
-      id: 'in5',
-      title: 'Apna Time Aayega',
-      artist: 'Ranveer Singh, DIVINE',
-      album: 'Gully Boy',
-      genre: 'Hip Hop',
-      thumbnail: 'https://i.ytimg.com/vi/VfnPp2lU8ck/maxresdefault.jpg',
-      videoId: 'VfnPp2lU8ck',
-      duration: '3:04'
-    },
-    {
-      id: 'in6',
-      title: 'Raataan Lambiyan',
-      artist: 'Tanishk Bagchi, Jubin Nautiyal',
-      album: 'Shershaah',
-      genre: 'Romantic',
-      thumbnail: 'https://i.ytimg.com/vi/oHEur6CqGGs/maxresdefault.jpg',
-      videoId: 'oHEur6CqGGs',
-      duration: '3:55'
-    },
-    {
-      id: 'in2',
-      title: 'Vande Mataram',
-      artist: 'A.R. Rahman',
-      album: 'Maa Tujhhe Salaam',
-      genre: 'Patriotic',
-      thumbnail: 'https://i.ytimg.com/vi/YRbMpq77naM/maxresdefault.jpg',
-      videoId: 'YRbMpq77naM',
-      duration: '5:05'
-    },
-    {
-      id: '2',
-      title: 'Shape of You',
-      artist: 'Ed Sheeran',
-      album: '÷ (Divide)',
+      id: 'yum1',
+      title: 'Yummy',
+      artist: 'Justin Bieber',
+      album: 'Changes',
       genre: 'Pop',
-      thumbnail: 'https://i.ytimg.com/vi/JGwWNGJdvx8/maxresdefault.jpg',
-      videoId: 'JGwWNGJdvx8',
-      duration: '3:53'
+      thumbnail: 'https://i.ytimg.com/vi/8EJ3zbKTWQ8/maxresdefault.jpg',
+      videoId: '8EJ3zbKTWQ8',
+      duration: '3:28'
+    },
+    {
+      id: 'baby1',
+      title: 'Baby Baby',
+      artist: 'Amy Grant',
+      album: 'Heart in Motion',
+      genre: 'Pop',
+      thumbnail: 'https://i.ytimg.com/vi/nDxhugRKZ8g/maxresdefault.jpg',
+      videoId: 'nDxhugRKZ8g',
+      duration: '4:02'
+    },
+    {
+      id: 'kol1',
+      title: 'Why This Kolaveri Di',
+      artist: 'Dhanush',
+      album: '3',
+      genre: 'Tamil',
+      thumbnail: 'https://i.ytimg.com/vi/YR12Z8f1Dh8/maxresdefault.jpg',
+      videoId: 'YR12Z8f1Dh8',
+      duration: '3:16'
+    },
+    {
+      id: 'new1',
+      title: 'Sunflower',
+      artist: 'Post Malone, Swae Lee',
+      album: 'Spider-Verse Soundtrack',
+      genre: 'Hip Hop',
+      thumbnail: 'https://i.ytimg.com/vi/ApXoWvfEYVU/maxresdefault.jpg',
+      videoId: 'ApXoWvfEYVU',
+      duration: '2:38'
+    },
+    {
+      id: 'new2',
+      title: 'Dynamite',
+      artist: 'BTS',
+      album: 'BE',
+      genre: 'K-Pop',
+      thumbnail: 'https://i.ytimg.com/vi/gdZLi9oWNZg/maxresdefault.jpg',
+      videoId: 'gdZLi9oWNZg',
+      duration: '3:19'
     },
     {
       id: '4',
