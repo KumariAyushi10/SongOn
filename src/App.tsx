@@ -37,28 +37,8 @@ const App: React.FC = () => {
   const playerRef = useRef<any>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Indian songs prioritized with high-quality posters
+  // Indian songs prioritized with high-quality posters (Jai Ho first)
   const indianSongs: Song[] = [
-    {
-      id: 'in1',
-      title: 'Kesariya',
-      artist: 'Arijit Singh',
-      album: 'Brahmastra',
-      genre: 'Bollywood',
-      thumbnail: 'https://i.ytimg.com/vi/YRJHvpzx9PU/maxresdefault.jpg',
-      videoId: 'YRJHvpzx9PU',
-      duration: '4:28'
-    },
-    {
-      id: 'in2',
-      title: 'Vande Mataram',
-      artist: 'A.R. Rahman',
-      album: 'Maa Tujhhe Salaam',
-      genre: 'Patriotic',
-      thumbnail: 'https://i.ytimg.com/vi/YRbMpq77naM/maxresdefault.jpg',
-      videoId: 'YRbMpq77naM',
-      duration: '5:05'
-    },
     {
       id: 'in3',
       title: 'Jai Ho',
@@ -68,6 +48,16 @@ const App: React.FC = () => {
       thumbnail: 'https://i.ytimg.com/vi/YR12Z8f1Dh8/maxresdefault.jpg',
       videoId: 'YR12Z8f1Dh8',
       duration: '5:09'
+    },
+    {
+      id: 'in1',
+      title: 'Kesariya',
+      artist: 'Arijit Singh',
+      album: 'Brahmastra',
+      genre: 'Bollywood',
+      thumbnail: 'https://i.ytimg.com/vi/YRJHvpzx9PU/maxresdefault.jpg',
+      videoId: 'YRJHvpzx9PU',
+      duration: '4:28'
     },
     {
       id: 'in4',
@@ -98,6 +88,16 @@ const App: React.FC = () => {
       thumbnail: 'https://i.ytimg.com/vi/oHEur6CqGGs/maxresdefault.jpg',
       videoId: 'oHEur6CqGGs',
       duration: '3:55'
+    },
+    {
+      id: 'in2',
+      title: 'Vande Mataram',
+      artist: 'A.R. Rahman',
+      album: 'Maa Tujhhe Salaam',
+      genre: 'Patriotic',
+      thumbnail: 'https://i.ytimg.com/vi/YRbMpq77naM/maxresdefault.jpg',
+      videoId: 'YRbMpq77naM',
+      duration: '5:05'
     }
   ];
 
@@ -424,13 +424,14 @@ const App: React.FC = () => {
     }));
   };
 
+  // Initialize playlists with sample songs (removed useEffect to prevent infinite loop)
   useEffect(() => {
-    setPlaylists(prev => ({
-        ...prev,
+    setPlaylists({
+        'My Playlist #1': [],
         'Bollywood Hits': indianSongs.slice(0, 3),
-        'Chill Vibes': trendingSongs.slice(0, 4)
-    }));
-}, [trendingSongs, indianSongs]);
+        'Chill Vibes': [...indianSongs.slice(0, 2), ...internationalSongs.slice(0, 2)]
+    });
+  }, []); // Empty dependency array to run only once
 
 
   useEffect(() => {
