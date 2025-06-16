@@ -150,9 +150,6 @@ const App: React.FC = () => {
 
   const [currentPlaylist, setCurrentPlaylist] = useState<Song[]>(trendingSongs);
 
-  const playerRef = useRef<any>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
   // Navigation items
   const navItems = [
     { id: 'home', label: 'Home', icon: '🏠' },
