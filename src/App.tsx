@@ -121,7 +121,63 @@ const App: React.FC = () => {
     
     setIsSearching(true);
     try {
-      // This is a mock search for demonstration. In a real app, you'd use YouTube Data API
+      const API_KEY = 'AIzaSyB1PLcfv4QUvHPCEgxuIm3erejq-xOQkAU';
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=10&q=${encodeURIComponent(query)}&type=video&key=${API_KEY}`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch search results');
+      }
+      
+      const data = await response.json();
+      
+      const results: Song[] = data.items.map((item: any, index: number) => ({
+        id: item.id.videoId,
+        title: item.snippet.title,
+        artist: item.snippet.channelTitle,
+        thumbnail: item.snippet.thumbnails.high?.url || item.snippet.thumbnails.default?.url,
+        videoId: item.id.videoId,
+        duration: 'Loading...'
+      }));
+      
+      // Get video durations
+      const videoIds = results.map(song => song.videoId).join(',');
+      const durationResponse = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=contentDetails&id=${videoIds}&key=${API_KEY}`
+      );
+      
+      if (durationResponse.ok) {
+        const durationData = await durationResponse.json();
+        const durationsMap = new Map();
+        
+        durationData.items.forEach((video: any) => {
+          const duration = video.contentDetails.duration;
+          // Convert ISO 8601 duration to readable format
+          const match = duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+          const hours = parseInt(match[1] || '0');
+          const minutes = parseInt(match[2] || '0');
+          const seconds = parseInt(match[3] || '0');
+          
+          let formattedDuration = '';
+          if (hours > 0) {
+            formattedDuration = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+          } else {
+            formattedDuration = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+          }
+          
+          durationsMap.set(video.id, formattedDuration);
+        });
+        
+        results.forEach(song => {
+          song.duration = durationsMap.get(song.videoId) || '0:00';
+        });
+      }
+      
+      setSearchResults(results);
+    } catch (error) {
+      console.error('Search error:', error);
+      // Fallback to mock results if API fails
       const mockResults: Song[] = [
         {
           id: `search-${Date.now()}-1`,
@@ -130,19 +186,9 @@ const App: React.FC = () => {
           thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/maxresdefault.jpg',
           videoId: 'dQw4w9WgXcQ',
           duration: '3:32'
-        },
-        {
-          id: `search-${Date.now()}-2`,
-          title: `${query} - Result 2`,
-          artist: 'Various Artist',
-          thumbnail: 'https://i.ytimg.com/vi/L_jWHffIx5E/maxresdefault.jpg',
-          videoId: 'L_jWHffIx5E',
-          duration: '4:12'
         }
       ];
       setSearchResults(mockResults);
-    } catch (error) {
-      console.error('Search error:', error);
     } finally {
       setIsSearching(false);
     }
