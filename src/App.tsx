@@ -29,11 +29,81 @@ const App: React.FC = () => {
   const [searchResults, setSearchResults] = useState<Song[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const [favorites, setFavorites] = useState<Song[]>([]);
+  const [playlists, setPlaylists] = useState<{[key: string]: Song[]}>({
+    'My Playlist #1': [],
+    'Bollywood Hits': indianSongs.slice(0, 3),
+    'Chill Vibes': trendingSongs.slice(0, 4)
+  });
   const playerRef = useRef<any>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Enhanced trending songs with better data
-  const trendingSongs: Song[] = [
+  // Indian songs prioritized with high-quality posters
+  const indianSongs: Song[] = [
+    {
+      id: 'in1',
+      title: 'Kesariya',
+      artist: 'Arijit Singh',
+      album: 'Brahmastra',
+      genre: 'Bollywood',
+      thumbnail: 'https://i.ytimg.com/vi/YRJHvpzx9PU/maxresdefault.jpg',
+      videoId: 'YRJHvpzx9PU',
+      duration: '4:28'
+    },
+    {
+      id: 'in2',
+      title: 'Vande Mataram',
+      artist: 'A.R. Rahman',
+      album: 'Maa Tujhhe Salaam',
+      genre: 'Patriotic',
+      thumbnail: 'https://i.ytimg.com/vi/YRbMpq77naM/maxresdefault.jpg',
+      videoId: 'YRbMpq77naM',
+      duration: '5:05'
+    },
+    {
+      id: 'in3',
+      title: 'Jai Ho',
+      artist: 'A.R. Rahman',
+      album: 'Slumdog Millionaire',
+      genre: 'Bollywood',
+      thumbnail: 'https://i.ytimg.com/vi/YR12Z8f1Dh8/maxresdefault.jpg',
+      videoId: 'YR12Z8f1Dh8',
+      duration: '5:09'
+    },
+    {
+      id: 'in4',
+      title: 'Tum Hi Ho',
+      artist: 'Arijit Singh',
+      album: 'Aashiqui 2',
+      genre: 'Romantic',
+      thumbnail: 'https://i.ytimg.com/vi/Jt_B_kGOj2c/maxresdefault.jpg',
+      videoId: 'Jt_B_kGOj2c',
+      duration: '4:22'
+    },
+    {
+      id: 'in5',
+      title: 'Apna Time Aayega',
+      artist: 'Ranveer Singh, DIVINE',
+      album: 'Gully Boy',
+      genre: 'Hip Hop',
+      thumbnail: 'https://i.ytimg.com/vi/VfnPp2lU8ck/maxresdefault.jpg',
+      videoId: 'VfnPp2lU8ck',
+      duration: '3:04'
+    },
+    {
+      id: 'in6',
+      title: 'Raataan Lambiyan',
+      artist: 'Tanishk Bagchi, Jubin Nautiyal',
+      album: 'Shershaah',
+      genre: 'Romantic',
+      thumbnail: 'https://i.ytimg.com/vi/oHEur6CqGGs/maxresdefault.jpg',
+      videoId: 'oHEur6CqGGs',
+      duration: '3:55'
+    }
+  ];
+
+  // International trending songs
+  const internationalSongs: Song[] = [
     {
       id: '1',
       title: 'Blinding Lights',
@@ -66,36 +136,6 @@ const App: React.FC = () => {
     },
     {
       id: '4',
-      title: 'Watermelon Sugar',
-      artist: 'Harry Styles',
-      album: 'Fine Line',
-      genre: 'Pop Rock',
-      thumbnail: 'https://i.ytimg.com/vi/E07s5ZYygMg/maxresdefault.jpg',
-      videoId: 'E07s5ZYygMg',
-      duration: '2:54'
-    },
-    {
-      id: '5',
-      title: 'Levitating',
-      artist: 'Dua Lipa',
-      album: 'Future Nostalgia',
-      genre: 'Disco Pop',
-      thumbnail: 'https://i.ytimg.com/vi/TUVcZfQe-Kw/maxresdefault.jpg',
-      videoId: 'TUVcZfQe-Kw',
-      duration: '3:23'
-    },
-    {
-      id: '6',
-      title: 'Stay',
-      artist: 'The Kid LAROI & Justin Bieber',
-      album: 'F*CK LOVE 3',
-      genre: 'Hip Hop',
-      thumbnail: 'https://i.ytimg.com/vi/kTJczUoc26U/maxresdefault.jpg',
-      videoId: 'kTJczUoc26U',
-      duration: '2:21'
-    },
-    {
-      id: '7',
       title: 'As It Was',
       artist: 'Harry Styles',
       album: 'Harry\'s House',
@@ -103,18 +143,11 @@ const App: React.FC = () => {
       thumbnail: 'https://i.ytimg.com/vi/H5v3kku4y6Q/maxresdefault.jpg',
       videoId: 'H5v3kku4y6Q',
       duration: '2:47'
-    },
-    {
-      id: '8',
-      title: 'Heat Waves',
-      artist: 'Glass Animals',
-      album: 'Dreamland',
-      genre: 'Indie Rock',
-      thumbnail: 'https://i.ytimg.com/vi/mRD0-GxqHVo/maxresdefault.jpg',
-      videoId: 'mRD0-GxqHVo',
-      duration: '3:58'
     }
   ];
+
+  // Combine with Indian songs first (prioritized)
+  const trendingSongs: Song[] = [...indianSongs, ...internationalSongs];
 
   const [currentPlaylist, setCurrentPlaylist] = useState<Song[]>(trendingSongs);
 
@@ -363,6 +396,35 @@ const App: React.FC = () => {
     searchYouTube(searchQuery);
   };
 
+  const toggleFavorite = (song: Song) => {
+    setFavorites(prev => {
+      const isAlreadyFavorite = prev.some(fav => fav.id === song.id);
+      if (isAlreadyFavorite) {
+        return prev.filter(fav => fav.id !== song.id);
+      } else {
+        return [...prev, song];
+      }
+    });
+  };
+
+  const isFavorite = (song: Song) => {
+    return favorites.some(fav => fav.id === song.id);
+  };
+
+  const addToPlaylist = (playlistName: string, song: Song) => {
+    setPlaylists(prev => ({
+      ...prev,
+      [playlistName]: [...(prev[playlistName] || []), song]
+    }));
+  };
+
+  const createPlaylist = (name: string) => {
+    setPlaylists(prev => ({
+      ...prev,
+      [name]: []
+    }));
+  };
+
   useEffect(() => {
     return () => {
       stopTimeUpdate();
@@ -431,9 +493,26 @@ const App: React.FC = () => {
           </nav>
           
           <div className="sidebar-playlists">
+            <h3>Your Playlists</h3>
+            <div className="playlist-items">
+              {Object.keys(playlists).slice(0, 3).map((playlistName) => (
+                <div 
+                  key={playlistName} 
+                  className="playlist-item" 
+                  onClick={() => setActiveSection('playlists')}
+                >
+                  <div className="playlist-icon">🎵</div>
+                  <div className="playlist-info">
+                    <p className="playlist-title">{playlistName}</p>
+                    <p className="playlist-artist">{playlists[playlistName].length} songs</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
             <h3>Recently Played</h3>
             <div className="playlist-items">
-              {trendingSongs.slice(0, 3).map((song) => (
+              {indianSongs.slice(0, 2).map((song) => (
                 <div key={song.id} className="playlist-item" onClick={() => playSong(song, 0)}>
                   <img src={song.thumbnail} alt={song.title} />
                   <div className="playlist-info">
@@ -547,12 +626,160 @@ const App: React.FC = () => {
             </section>
           )}
 
-          {(activeSection === 'library' || activeSection === 'playlists' || activeSection === 'favorites') && (
-            <section className="feature-section">
-              <div className="empty-state">
-                <div className="empty-icon">🚧</div>
-                <h3>Coming Soon</h3>
-                <p>This feature is under development</p>
+          {activeSection === 'favorites' && (
+            <section className="favorites-section">
+              <div className="section-header">
+                <h2>Your Favorites ❤️</h2>
+                <span className="song-count">{favorites.length} songs</span>
+              </div>
+              {favorites.length > 0 ? (
+                <div className="songs-grid">
+                  {favorites.map((song, index) => (
+                    <div 
+                      key={song.id} 
+                      className="song-card professional"
+                      onClick={() => playSong(song, index, favorites)}
+                    >
+                      <div className="song-image-container">
+                        <img src={song.thumbnail} alt={song.title} className="song-poster" />
+                        <div className="play-overlay">
+                          <div className="play-button">▶️</div>
+                        </div>
+                      </div>
+                      <div className="song-details">
+                        <h3 className="song-title">{song.title}</h3>
+                        <p className="song-artist">{song.artist}</p>
+                        <p className="song-album">{song.album}</p>
+                        <div className="song-meta">
+                          <span className="genre">{song.genre}</span>
+                          <span className="duration">{song.duration}</span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="empty-state">
+                  <div className="empty-icon">💔</div>
+                  <h3>No favorites yet</h3>
+                  <p>Start adding songs to your favorites by clicking the heart icon</p>
+                </div>
+              )}
+            </section>
+          )}
+
+          {activeSection === 'playlists' && (
+            <section className="playlists-section">
+              <div className="section-header">
+                <h2>Your Playlists</h2>
+                <button 
+                  className="create-playlist-btn"
+                  onClick={() => {
+                    const name = prompt('Enter playlist name:');
+                    if (name) createPlaylist(name);
+                  }}
+                >
+                  + Create Playlist
+                </button>
+              </div>
+              <div className="playlists-grid">
+                {Object.entries(playlists).map(([playlistName, songs]) => (
+                  <div key={playlistName} className="playlist-card">
+                    <div className="playlist-cover">
+                      {songs.length > 0 ? (
+                        <div className="playlist-images">
+                          {songs.slice(0, 4).map((song, index) => (
+                            <img 
+                              key={song.id} 
+                              src={song.thumbnail} 
+                              alt={song.title}
+                              className={`playlist-thumb thumb-${index + 1}`}
+                            />
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="empty-playlist-cover">
+                          <span className="playlist-icon">🎵</span>
+                        </div>
+                      )}
+                    </div>
+                    <div className="playlist-info">
+                      <h3>{playlistName}</h3>
+                      <p>{songs.length} songs</p>
+                      <div className="playlist-actions">
+                        <button 
+                          className="play-playlist-btn"
+                          onClick={() => {
+                            if (songs.length > 0) {
+                              playSong(songs[0], 0, songs);
+                            }
+                          }}
+                          disabled={songs.length === 0}
+                        >
+                          {songs.length > 0 ? '▶️ Play' : 'Empty'}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {activeSection === 'library' && (
+            <section className="library-section">
+              <div className="section-header">
+                <h2>Your Library</h2>
+              </div>
+              <div className="library-categories">
+                <div className="library-category" onClick={() => setActiveSection('favorites')}>
+                  <div className="category-icon">❤️</div>
+                  <div className="category-info">
+                    <h3>Liked Songs</h3>
+                    <p>{favorites.length} songs</p>
+                  </div>
+                </div>
+                <div className="library-category" onClick={() => setActiveSection('playlists')}>
+                  <div className="category-icon">🎵</div>
+                  <div className="category-info">
+                    <h3>Playlists</h3>
+                    <p>{Object.keys(playlists).length} playlists</p>
+                  </div>
+                </div>
+                <div className="library-category">
+                  <div className="category-icon">🎤</div>
+                  <div className="category-info">
+                    <h3>Artists</h3>
+                    <p>Coming soon</p>
+                  </div>
+                </div>
+                <div className="library-category">
+                  <div className="category-icon">💿</div>
+                  <div className="category-info">
+                    <h3>Albums</h3>
+                    <p>Coming soon</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="recent-activity">
+                <h3>Recent Activity</h3>
+                <div className="songs-list">
+                  {indianSongs.slice(0, 5).map((song, index) => (
+                    <div 
+                      key={song.id} 
+                      className="song-list-item"
+                      onClick={() => playSong(song, index, indianSongs)}
+                    >
+                      <img src={song.thumbnail} alt={song.title} />
+                      <div className="song-info">
+                        <h4>{song.title}</h4>
+                        <p>{song.artist}</p>
+                      </div>
+                      <span className="song-duration">{song.duration}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
           )}
@@ -568,7 +795,13 @@ const App: React.FC = () => {
               <h4 className="track-title">{currentSong.title}</h4>
               <p className="track-artist">{currentSong.artist}</p>
             </div>
-            <button className="favorite-btn">🤍</button>
+            <button 
+              className="favorite-btn"
+              onClick={() => toggleFavorite(currentSong)}
+              title={isFavorite(currentSong) ? 'Remove from favorites' : 'Add to favorites'}
+            >
+              {isFavorite(currentSong) ? '❤️' : '🤍'}
+            </button>
           </div>
 
           <div className="player-controls-center">

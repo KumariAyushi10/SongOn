@@ -825,7 +825,280 @@ body {
   opacity: 1;
 }
 
-/* Responsive Design */
+/* Playlist Card Styles */
+.playlist-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.app.dark .playlist-icon {
+  background: #1a1a1a;
+}
+
+.app.light .playlist-icon {
+  background: #f1f5f9;
+}
+
+/* Create Playlist Button */
+.create-playlist-btn {
+  background: linear-gradient(45deg, #10b981, #06b6d4);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-playlist-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Song Count */
+.song-count {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* Playlists Grid */
+.playlists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.playlist-card {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+}
+
+.app.dark .playlist-card {
+  background: #111111;
+  border: 1px solid #222;
+}
+
+.app.light .playlist-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+}
+
+.playlist-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+}
+
+.playlist-cover {
+  width: 100%;
+  height: 200px;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.playlist-images {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 100%;
+  gap: 2px;
+}
+
+.playlist-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.empty-playlist-cover {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  opacity: 0.5;
+}
+
+.app.dark .empty-playlist-cover {
+  background: #1a1a1a;
+}
+
+.app.light .empty-playlist-cover {
+  background: #f8fafc;
+}
+
+.playlist-info h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.playlist-info p {
+  opacity: 0.7;
+  margin-bottom: 1rem;
+}
+
+.play-playlist-btn {
+  background: linear-gradient(45deg, #10b981, #06b6d4);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.play-playlist-btn:disabled {
+  background: #666;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.play-playlist-btn:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+/* Library Categories */
+.library-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.library-category {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.app.dark .library-category {
+  background: #111111;
+  border: 1px solid #222;
+}
+
+.app.light .library-category {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.library-category:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.category-icon {
+  font-size: 2.5rem;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+
+.app.dark .category-icon {
+  background: #1a1a1a;
+}
+
+.app.light .category-icon {
+  background: #f8fafc;
+}
+
+.category-info h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+
+.category-info p {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+/* Songs List */
+.songs-list {
+  space-y: 0.5rem;
+}
+
+.song-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.app.dark .song-list-item:hover {
+  background: #1a1a1a;
+}
+
+.app.light .song-list-item:hover {
+  background: #f8fafc;
+}
+
+.song-list-item img {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.song-info {
+  flex: 1;
+}
+
+.song-info h4 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+.song-info p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.song-duration {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  font-weight: 500;
+}
+
+/* Recent Activity */
+.recent-activity {
+  margin-top: 2rem;
+}
+
+.recent-activity h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+/* Enhanced Responsive Design */
 @media (max-width: 1200px) {
   .sidebar {
     width: 240px;
@@ -833,6 +1106,14 @@ body {
   
   .songs-grid {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  .playlists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+
+  .library-categories {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
 }
 
@@ -846,6 +1127,7 @@ body {
     height: auto;
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
   }
   
   .sidebar-nav {
@@ -853,11 +1135,22 @@ body {
     overflow-x: auto;
     gap: 0.5rem;
     margin-bottom: 1rem;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .sidebar-nav::-webkit-scrollbar {
+    display: none;
   }
   
   .nav-item {
     flex-shrink: 0;
     margin-bottom: 0;
+    min-width: 120px;
+  }
+  
+  .sidebar-playlists {
+    display: none;
   }
   
   .header {
@@ -871,11 +1164,20 @@ body {
     max-width: 100%;
     margin: 0;
   }
+
+  .playlists-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+
+  .library-categories {
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
   .main-content {
     padding: 1rem;
+    padding-bottom: 140px;
   }
 
   .songs-grid {
@@ -889,6 +1191,30 @@ body {
 
   .quick-picks-grid {
     grid-template-columns: 1fr;
+  }
+
+  .playlists-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .library-categories {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .playlist-cover {
+    height: 150px;
+  }
+
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.5rem;
   }
 
   .music-player.enhanced {
@@ -910,6 +1236,15 @@ body {
   .control-buttons {
     margin: 1rem 0;
   }
+
+  .song-list-item {
+    padding: 0.5rem;
+  }
+
+  .song-list-item img {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -919,6 +1254,20 @@ body {
   
   .header-brand .logo h1 {
     font-size: 1.5rem;
+  }
+  
+  .header-actions {
+    gap: 0.5rem;
+  }
+
+  .premium-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .theme-toggle {
+    width: 40px;
+    height: 40px;
   }
   
   .songs-grid {
@@ -932,6 +1281,28 @@ body {
   .hero-content h1 {
     font-size: 1.5rem;
   }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .quick-picks h2,
+  .section-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .sidebar {
+    padding: 0.5rem;
+  }
+
+  .nav-item {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .nav-icon {
+    font-size: 1rem;
+  }
   
   .player-track-info {
     gap: 0.5rem;
@@ -941,6 +1312,74 @@ body {
     width: 48px;
     height: 48px;
   }
+
+  .track-title {
+    font-size: 0.9rem;
+  }
+
+  .track-artist {
+    font-size: 0.8rem;
+  }
+
+  .volume-control {
+    display: none;
+  }
+
+  .player-additional-controls {
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .playlist-card {
+    padding: 1rem;
+  }
+
+  .playlist-cover {
+    height: 120px;
+  }
+
+  .category-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+  }
+
+  .song-list-item {
+    gap: 0.5rem;
+  }
+
+  .empty-state {
+    padding: 2rem 1rem;
+  }
+
+  .empty-icon {
+    font-size: 3rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.2rem;
+  }
+
+  .empty-state p {
+    font-size: 1rem;
+  }
+}
+
+/* Special styling for Indian content priority */
+.song-card.professional:nth-child(-n+6) {
+  position: relative;
+}
+
+.song-card.professional:nth-child(-n+6)::before {
+  content: '🇮🇳';
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 10;
+  background: rgba(255, 153, 0, 0.9);
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
 }
 
 /* Smooth scrollbar */
