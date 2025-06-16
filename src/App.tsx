@@ -104,7 +104,7 @@ const App: React.FC = () => {
     height: '0',
     width: '0',
     playerVars: {
-      autoplay: 0,
+      autoplay: 1,
       controls: 0,
       disablekb: 1,
       enablejsapi: 1,
@@ -113,6 +113,8 @@ const App: React.FC = () => {
       modestbranding: 1,
       playsinline: 1,
       rel: 0,
+      origin: window.location.origin,
+      host: 'https://www.youtube-nocookie.com'
     },
   };
 
@@ -199,6 +201,11 @@ const App: React.FC = () => {
     const player = event.target;
     setDuration(player.getDuration());
     player.setVolume(volume);
+    
+    // Start playing immediately when ready
+    setTimeout(() => {
+      player.playVideo();
+    }, 100);
   };
 
   const onStateChange = (event: any) => {
@@ -216,6 +223,23 @@ const App: React.FC = () => {
       setIsPlaying(false);
       stopTimeUpdate();
       handleSongEnd();
+    } else if (state === -1) { // unstarted
+      // Try to play after a short delay
+      setTimeout(() => {
+        if (player && player.playVideo) {
+          player.playVideo();
+        }
+      }, 500);
+    }
+  };
+
+  const onError = (event: any) => {
+    console.log('YouTube player error:', event.data);
+    // If there's an error, try to skip to next song
+    if (isAutoplay && currentPlaylist.length > 1) {
+      setTimeout(() => {
+        nextSong();
+      }, 2000);
     }
   };
 
@@ -246,10 +270,23 @@ const App: React.FC = () => {
 
   const togglePlayPause = () => {
     if (playerRef.current) {
-      if (isPlaying) {
-        playerRef.current.pauseVideo();
-      } else {
-        playerRef.current.playVideo();
+      try {
+        if (isPlaying) {
+          playerRef.current.pauseVideo();
+        } else {
+          playerRef.current.playVideo();
+        }
+      } catch (error) {
+        console.log('Error controlling playback:', error);
+        // Force reload the player if there's an error
+        const currentVideoId = currentSong?.videoId;
+        if (currentVideoId) {
+          setTimeout(() => {
+            if (playerRef.current) {
+              playerRef.current.loadVideoById(currentVideoId);
+            }
+          }, 1000);
+        }
       }
     }
   };
@@ -468,10 +505,12 @@ const App: React.FC = () => {
           {/* Hidden YouTube Player */}
           <div style={{ display: 'none' }}>
             <YouTube
+              key={currentSong.videoId}
               videoId={currentSong.videoId}
               opts={opts}
               onReady={onReady}
               onStateChange={onStateChange}
+              onError={onError}
             />
           </div>
         </div>
