@@ -1,13 +1,39 @@
-## Running React on Replit
+# songon-music-player
 
-[React](https://reactjs.org/) is a popular JavaScript library for building user interfaces.
+A modern and responsive music streaming player built with React, TypeScript, and Vite. The application integrates with a music API to search for tracks, fetch streaming data, and provide an interactive playback interface.
 
-[Vite](https://vitejs.dev/) is a blazing fast frontend build tool that includes features like Hot Module Reloading (HMR), optimized builds, and TypeScript support out of the box.
+## Features
 
-Using the two in conjunction is one of the fastest ways to build a web app.
+* **Track Search & Discovery:** Query a live music database to find songs, artists, and albums.
+* **Audio Playback:** Fully functional player controls including play, pause, and track skip navigation.
+* **Dynamic UI:** Clean, reactive component layout built using React state management for seamless user interactions.
+* **Fast Development Cycle:** Bundled with Vite to ensure rapid loading times and optimized production builds.
 
-### Getting Started
-- Hit run
-- Edit [App.tsx](#src/App.tsx) and watch it live update!
+## Project Structure
 
-By default, Replit runs the `dev` script, but you can configure it by changing the `run` field in the [configuration file](#.replit). Here are the vite docs for [serving production websites](https://vitejs.dev/guide/build.html)
+```text
+├── public/        # Static public assets and global resources
+├── src/           # React components, custom hooks, and application logic
+├── index.html     # Main entry point template
+├── package.json   # Project dependencies and script configurations
+├── vite.config.js # Vite build settings
+└── readme.md      # Project documentation
+```
+
+## How to Run It
+
+To run this application locally on your machine, you will need [Node.js](https://nodejs.org) installed:
+
+1. Click the green **Code** button at the top of this GitHub page and select **Download ZIP**.
+2. Extract the downloaded ZIP file on your computer.
+3. Open your command terminal, navigate into the extracted folder, and install the required dependencies:
+   ```bash
+   npm install
+   ```
+4. Start the local development server:
+   ```bash
+   npm run dev
+   ```
+5. Open the local address provided in your terminal (usually `http://localhost:5173`) in your web browser to view the application.
+
+
